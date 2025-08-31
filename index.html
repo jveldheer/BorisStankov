@@ -174,6 +174,32 @@
     box-shadow: 0 0 20px var(--glow);
   }
   
+  /* Week Select Buttons */
+  .week-select-btn {
+    font-family: 'Bebas Neue', sans-serif;
+    background: var(--dark-gray);
+    color: var(--gray);
+    border: 2px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+  }
+
+  .week-select-btn:hover {
+    background: rgba(245, 200, 66, 0.15);
+    border-color: var(--yellow);
+    color: var(--white);
+  }
+
+  .week-select-btn.active {
+    background: var(--yellow);
+    color: var(--black);
+    border-color: var(--yellow);
+    font-weight: bold;
+  }
+  
   /* Main Content */
   main {
     max-width: 1400px;
@@ -275,6 +301,79 @@
     text-transform: uppercase;
   }
   
+  /* Timer Section */
+  .timer-section {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--dark-gray);
+    border: 2px solid var(--yellow);
+    border-radius: 15px;
+    padding: 20px;
+    z-index: 1000;
+    min-width: 200px;
+    box-shadow: 0 10px 30px var(--shadow);
+    display: none;
+  }
+  
+  .timer-section.active {
+    display: block;
+  }
+  
+  .timer-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5em;
+    color: var(--yellow);
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .timer-btn {
+    background: var(--yellow);
+    color: var(--black);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1em;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+  
+  .timer-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--glow);
+  }
+  
+  /* Quick Timer Button */
+  .quick-timer-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--yellow);
+    color: var(--black);
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 5px 20px var(--shadow);
+    z-index: 999;
+    transition: all 0.3s ease;
+    font-size: 1.5em;
+  }
+  
+  .quick-timer-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px var(--glow);
+  }
+  
   /* Stats Grid */
   .stats-grid {
     display: grid;
@@ -370,6 +469,33 @@
     min-width: 100px;
   }
   
+  /* Exercise Links */
+  .exercise-link {
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--yellow);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .exercise-link:hover {
+    color: var(--yellow);
+    text-shadow: 0 0 10px var(--glow);
+  }
+  
+  .exercise-link::after {
+    content: '🎥';
+    font-size: 0.8em;
+    margin-left: 5px;
+    opacity: 0.7;
+  }
+  
+  .weight-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
   .weight-input {
     background: var(--black);
     border: 1px solid var(--yellow);
@@ -392,6 +518,43 @@
   .weight-input::placeholder {
     color: var(--gray);
     opacity: 0.7;
+  }
+  
+  .weight-saved {
+    color: var(--green);
+    font-size: 0.8em;
+    display: none;
+  }
+  
+  .weight-saved.show {
+    display: inline;
+    animation: fadeInOut 2s ease;
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  
+  /* Progress Badge */
+  .progress-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--green);
+    color: var(--black);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: bold;
+  }
+  
+  .progress-badge.up {
+    background: var(--green);
+  }
+  
+  .progress-badge.down {
+    background: var(--red);
   }
   
   /* Lists */
@@ -448,7 +611,49 @@
     margin-bottom: 10px;
   }
   
-  /* Nutrition Grid */
+  /* Print Styles */
+  .print-btn {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin: 10px;
+  }
+  
+  .print-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
+  }
+  
+  @media print {
+    body {
+      background: white;
+      color: black;
+    }
+    
+    header, nav, .timer-section, .quick-timer-btn, .print-btn {
+      display: none;
+    }
+    
+    .day-card {
+      page-break-inside: avoid;
+      border: 1px solid #000;
+      margin-bottom: 20px;
+    }
+    
+    .exercise-item {
+      border-left: 2px solid #000;
+      background: #f5f5f5;
+    }
+  }
+  
+  /* Meal Grid */
   .meal-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -518,6 +723,18 @@
       text-align: center;
       gap: 8px;
     }
+    
+    .timer-section {
+      bottom: 60px;
+      right: 10px;
+      left: 10px;
+      min-width: auto;
+    }
+    
+    .quick-timer-btn {
+      bottom: 10px;
+      right: 10px;
+    }
   }
 </style>
 </head>
@@ -539,15 +756,37 @@
 <!-- Navigation -->
 <nav>
   <div class="nav-wrapper">
-    <button class="nav-btn active" onclick="showTab('overview')">OVERVIEW</button>
-    <button class="nav-btn" onclick="showTab('weekly')">WEEKLY PROGRAM</button>
-    <button class="nav-btn" onclick="showTab('nutrition')">NUTRITION</button>
-    <button class="nav-btn" onclick="showTab('recovery')">RECOVERY</button>
-    <button class="nav-btn" onclick="showTab('daily-flow')">DAILY FLOW</button>
-    <button class="nav-btn" onclick="showTab('extra-work')">EXTRA WORK</button>
-    <button class="nav-btn" onclick="showTab('nfl-program')">6-WEEK NFL PROGRAM</button>
+    <button class="nav-btn active" onclick="showTab('overview', event)">OVERVIEW</button>
+    <button class="nav-btn" onclick="showTab('weekly', event)">WEEKLY PROGRAM</button>
+    <button class="nav-btn" onclick="showTab('nutrition', event)">NUTRITION</button>
+    <button class="nav-btn" onclick="showTab('recovery', event)">RECOVERY</button>
+    <button class="nav-btn" onclick="showTab('daily-flow', event)">DAILY FLOW</button>
+    <button class="nav-btn" onclick="showTab('extra-work', event)">EXTRA WORK</button>
   </div>
 </nav>
+
+<!-- Timer Button -->
+<button class="quick-timer-btn" onclick="toggleTimer()">⏱️</button>
+
+<!-- Timer Section -->
+<div class="timer-section" id="timerSection">
+  <div class="timer-display" id="timerDisplay">00:00</div>
+  <div class="timer-controls">
+    <button class="timer-btn" onclick="startTimer()">START</button>
+    <button class="timer-btn" onclick="pauseTimer()">PAUSE</button>
+    <button class="timer-btn" onclick="resetTimer()">RESET</button>
+  </div>
+  <div style="margin-top: 15px;">
+    <select id="timerPreset" style="width: 100%; padding: 5px; background: var(--black); color: var(--white); border: 1px solid var(--yellow); border-radius: 5px;">
+      <option value="30">30 seconds</option>
+      <option value="45">45 seconds</option>
+      <option value="60">1 minute</option>
+      <option value="90">1:30 minutes</option>
+      <option value="120">2 minutes</option>
+      <option value="180">3 minutes</option>
+    </select>
+  </div>
+</div>
 
 <!-- Main Content -->
 <main>
@@ -619,7 +858,7 @@
   <!-- Weekly Program Tab -->
   <div class="tab-content" id="weekly">
     <div class="card">
-      <h2 class="card-title">WEEKLY TRAINING SCHEDULE - NFL BLOCK</h2>
+      <h2 class="card-title">WEEKLY TRAINING SCHEDULE</h2>
       
       <!-- Week Selector -->
       <div style="text-align: center; margin: 20px 0;">
@@ -639,76 +878,107 @@
         <p>Focus: Movement patterns, base building, technique refinement</p>
       </div>
       
-      <!-- Monday -->
-      <div class="day-card">
+      <!-- Monday - Day 1 Lower -->
+      <div class="day-card" id="monday-workout">
         <div class="day-header">
-          <div class="day-title">MONDAY - LOWER A</div>
+          <div class="day-title">MONDAY - DAY 1 LOWER</div>
           <div class="day-type">Heavy Neural + Power</div>
         </div>
+        <button class="print-btn" onclick="printDay('monday')">PRINT WORKOUT</button>
         
         <div class="exercise-section">
           <div class="section-title">PRE-WORKOUT PROTOCOL</div>
           <ul>
             <li style="color: var(--yellow); font-weight: bold;">Perform Daily Vault Work</li>
-            <li style="color: var(--yellow); font-weight: bold;">Perform Lower Dynamic Warmup</li>
+            <li style="color: var(--yellow); font-weight: bold;"><a href="https://youtu.be/9n7NwYSX1lI" target="_blank" class="exercise-link" style="color: var(--yellow);">Perform Lower Dynamic Warmup</a></li>
           </ul>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">FIELD/POWER (10-12 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Footwork Sled Push</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/vJ5rkJYFj2g" target="_blank" class="exercise-link">Footwork Sled Push</a></span>
             <span class="exercise-details">2×8 (7s work/20s rest)</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sled-push-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sled-push-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Box Jump</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/exXHk54fKI4" target="_blank" class="exercise-link">Box Jump</a></span>
             <span class="exercise-details">3×5</span>
-            <input type="text" class="weight-input" placeholder="Height (cm)" data-exercise="box-jump-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Height (cm)" data-exercise="box-jump-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">WEIGHT ROOM (25-35 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Banded Pass Set Power Step</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/UWnTWC9IAuA" target="_blank" class="exercise-link">Banded Pass Set Power Step</a></span>
             <span class="exercise-details">3×10/10 (R/L)</span>
-            <input type="text" class="weight-input" placeholder="Band" data-exercise="power-step-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="power-step-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Barbell Step Up (12-16" Box)</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/RIU8zWyBAB4" target="_blank" class="exercise-link">Barbell Step Up (12-16" Box)</a></span>
             <span class="exercise-details">3×5/5</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="step-up-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="step-up-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Banded Pass Set Kick Step</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/1e2XoIsloGU" target="_blank" class="exercise-link">Banded Pass Set Kick Step</a></span>
             <span class="exercise-details">3×10/10 (R/L)</span>
-            <input type="text" class="weight-input" placeholder="Band" data-exercise="kick-step-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="kick-step-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Box Squat (optional Chains/Bands)</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/LnGHXm-iXb4" target="_blank" class="exercise-link">Box Squat (optional Chains/Bands)</a></span>
             <span class="exercise-details">4×5 (5 sec eccentric)</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="box-squat-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="box-squat-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Body Weight Hip Airplane</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/FpFlL3htbiw" target="_blank" class="exercise-link">Body Weight Hip Airplane</a></span>
             <span class="exercise-details">4×6/6</span>
-            <input type="text" class="weight-input" placeholder="BW" data-exercise="hip-airplane-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="BW" data-exercise="hip-airplane-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">DB/KB Single leg RDL</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/hpTLF7uAeHU" target="_blank" class="exercise-link">DB/KB Single leg RDL</a></span>
             <span class="exercise-details">2×10</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sl-rdl-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sl-rdl-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Banded Seated Calf</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/2WRb_6w3qZQ" target="_blank" class="exercise-link">Banded Seated Calf</a></span>
             <span class="exercise-details">2×15 (slow eccentric)</span>
-            <input type="text" class="weight-input" placeholder="Band" data-exercise="calf-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="calf-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Tib Bar Raise</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/2CZV28ZE62o" target="_blank" class="exercise-link">Tib Bar Raise</a></span>
             <span class="exercise-details">2×15 (slow eccentric)</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="tib-mon">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="tib-mon" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
@@ -721,76 +991,107 @@
         </div>
       </div>
       
-      <!-- Tuesday -->
-      <div class="day-card">
+      <!-- Tuesday - Day 2 Upper -->
+      <div class="day-card" id="tuesday-workout">
         <div class="day-header">
-          <div class="day-title">TUESDAY - UPPER A</div>
+          <div class="day-title">TUESDAY - DAY 2 UPPER</div>
           <div class="day-type">Speed + Armor</div>
         </div>
+        <button class="print-btn" onclick="printDay('tuesday')">PRINT WORKOUT</button>
         
         <div class="exercise-section">
           <div class="section-title">PRE-WORKOUT PROTOCOL</div>
           <ul>
             <li style="color: var(--yellow); font-weight: bold;">Perform Daily Vault Work</li>
-            <li style="color: var(--yellow); font-weight: bold;">Perform Upper Dynamic Warmup</li>
+            <li style="color: var(--yellow); font-weight: bold;"><a href="https://youtu.be/oT3TC0wZ9VY" target="_blank" class="exercise-link" style="color: var(--yellow);">Perform Upper Dynamic Warmup</a></li>
           </ul>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">FIELD/POWER (8-10 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Down the Wall Med Ball Punch</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/sKgnfF3TZyU" target="_blank" class="exercise-link">Down the Wall Med Ball Punch</a></span>
             <span class="exercise-details">2×10/10 L/R</span>
-            <input type="text" class="weight-input" placeholder="Ball (kg)" data-exercise="med-ball-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Ball (kg)" data-exercise="med-ball-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">WEIGHT ROOM (25-35 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Barbell Bench Press</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/Bmijfk3zevc" target="_blank" class="exercise-link">Barbell Bench Press</a></span>
             <span class="exercise-details">3×5</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="bench-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="bench-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Band Pull Aparts</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/vCG3rTi2_ZI" target="_blank" class="exercise-link">Band Pull Aparts</a></span>
             <span class="exercise-details">3×12</span>
-            <input type="text" class="weight-input" placeholder="Band" data-exercise="pull-apart-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="pull-apart-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">TRX Row</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/XpfzsSw_U_Q" target="_blank" class="exercise-link">TRX Row</a></span>
             <span class="exercise-details">2×8 (6 sec negative)</span>
-            <input type="text" class="weight-input" placeholder="Angle" data-exercise="trx-row-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Angle" data-exercise="trx-row-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Physio ball neck bridge</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/PKX92g8G3sI" target="_blank" class="exercise-link">Physio ball neck bridge</a></span>
             <span class="exercise-details">2×30 seconds</span>
-            <input type="text" class="weight-input" placeholder="Time" data-exercise="neck-bridge-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Time" data-exercise="neck-bridge-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">1 Arm KB Shrug</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/8VsLh73nb54" target="_blank" class="exercise-link">1 Arm KB Shrug</a></span>
             <span class="exercise-details">2×15/15</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="kb-shrug-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="kb-shrug-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">TRX/Cable Face pull</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/QmSUaw0LZOU" target="_blank" class="exercise-link">TRX/Cable Face pull</a></span>
             <span class="exercise-details">2×20</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="face-pull-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="face-pull-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Dead Bugs</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/mzosvTFHQd4" target="_blank" class="exercise-link">Dead Bugs</a></span>
             <span class="exercise-details">2×8/8</span>
-            <input type="text" class="weight-input" placeholder="BW" data-exercise="dead-bugs-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="BW" data-exercise="dead-bugs-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Tricep Pushdowns</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/EPn02tZL68U" target="_blank" class="exercise-link">Tricep Pushdowns</a></span>
             <span class="exercise-details">2×10</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="tricep-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="tricep-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Pass Set Pallof Press</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/k1RyXZEmKNo" target="_blank" class="exercise-link">Pass Set Pallof Press</a></span>
             <span class="exercise-details">2×10/10</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="pallof-tue">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="pallof-tue" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
@@ -802,8 +1103,8 @@
         </div>
       </div>
       
-      <!-- Wednesday -->
-      <div class="day-card">
+      <!-- Wednesday - Recovery -->
+      <div class="day-card" id="wednesday-workout">
         <div class="day-header">
           <div class="day-title">WEDNESDAY - RECOVERY</div>
           <div class="day-type">Tissue + Aerobic Reset</div>
@@ -835,76 +1136,107 @@
         </div>
       </div>
       
-      <!-- Thursday -->
-      <div class="day-card">
+      <!-- Thursday - Day 3 Lower -->
+      <div class="day-card" id="thursday-workout">
         <div class="day-header">
-          <div class="day-title">THURSDAY - LOWER B</div>
+          <div class="day-title">THURSDAY - DAY 3 LOWER</div>
           <div class="day-type">Strength + Re-accel</div>
         </div>
+        <button class="print-btn" onclick="printDay('thursday')">PRINT WORKOUT</button>
         
         <div class="exercise-section">
           <div class="section-title">PRE-WORKOUT PROTOCOL</div>
           <ul>
             <li style="color: var(--yellow); font-weight: bold;">Perform Daily Vault Work</li>
-            <li style="color: var(--yellow); font-weight: bold;">Perform Lower Dynamic Warmup</li>
+            <li style="color: var(--yellow); font-weight: bold;"><a href="https://youtu.be/9n7NwYSX1lI" target="_blank" class="exercise-link" style="color: var(--yellow);">Perform Lower Dynamic Warmup</a></li>
           </ul>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">FIELD/POWER (10-12 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Footwork Sled Push</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/vJ5rkJYFj2g" target="_blank" class="exercise-link">Footwork Sled Push</a></span>
             <span class="exercise-details">2×8 (7s work/20s rest)</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sled-push-thu">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sled-push-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">1 leg Broad Jump stick landing</span>
-            <span class="exercise-details">3×3/3</span>
-            <input type="text" class="weight-input" placeholder="Distance" data-exercise="broad-jump-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/uKC7iY9FlKc" target="_blank" class="exercise-link">Single Leg Box Jump</a></span>
+            <span class="exercise-details">2×5/5</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Height" data-exercise="sl-box-jump-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">WEIGHT ROOM (25-35 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Pass set Power Step</span>
-            <span class="exercise-details">3×10/10 (R/L)</span>
-            <input type="text" class="weight-input" placeholder="Band" data-exercise="power-step-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/xgXJrgJzano" target="_blank" class="exercise-link">Banded Lateral Neck Kick to Power</a></span>
+            <span class="exercise-details">2×6 (R/L)</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="kick-power-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Lateral Lunge</span>
-            <span class="exercise-details">3×6</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="lateral-lunge-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/xgXJrgJzano" target="_blank" class="exercise-link">Banded Lateral Neck Power to Kick</a></span>
+            <span class="exercise-details">2×6 (R/L)</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="power-kick-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Pass Set Kick Step</span>
-            <span class="exercise-details">3×10/10 (R/L)</span>
-            <input type="text" class="weight-input" placeholder="Band" data-exercise="kick-step-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/tNK_boQhqJQ" target="_blank" class="exercise-link">Trap Bar RFESS</a></span>
+            <span class="exercise-details">2×5/5 (3 sec eccentric)</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="trap-rfess-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Trap Bar Deadlift (chains/bands)</span>
-            <span class="exercise-details">4×5 @ 70%</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="trap-bar-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/P28QxLx-f74" target="_blank" class="exercise-link">Body Weight Cross Over Step Up</a></span>
+            <span class="exercise-details">2×5/5</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="BW" data-exercise="crossover-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">KB/DB Goblet Squat</span>
-            <span class="exercise-details">4×8 (5 sec eccentric)</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="goblet-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/gJ6711e5TDc" target="_blank" class="exercise-link">Goblet Squat</a></span>
+            <span class="exercise-details">2×10</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="goblet-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Walking Lunge with OH reach</span>
-            <span class="exercise-details">2×12 total</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="walking-lunge-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/y77mkqxs3nY" target="_blank" class="exercise-link">Dumbbell + Iron Neck Curtsy Lunge</a></span>
+            <span class="exercise-details">2×8/8</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="curtsy-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">1 Leg Standing Calf</span>
-            <span class="exercise-details">2×15/15</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="calf-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/yQwueSUcZkI" target="_blank" class="exercise-link">Elevated Single Leg Glute Bridge</a></span>
+            <span class="exercise-details">2×8/8 (slow eccentric)</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="BW" data-exercise="glute-bridge-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Tib Bar Raise</span>
-            <span class="exercise-details">2×15</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="tib-thu">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/QH1CaFYeiQA" target="_blank" class="exercise-link">Single Leg Standing Calf Raise</a></span>
+            <span class="exercise-details">2×15 (slow eccentric)</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="sl-calf-thu" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
@@ -916,76 +1248,107 @@
         </div>
       </div>
       
-      <!-- Friday -->
-      <div class="day-card">
+      <!-- Friday - Day 4 Upper -->
+      <div class="day-card" id="friday-workout">
         <div class="day-header">
-          <div class="day-title">FRIDAY - UPPER B</div>
+          <div class="day-title">FRIDAY - DAY 4 UPPER</div>
           <div class="day-type">Strength + Speed Blend</div>
         </div>
+        <button class="print-btn" onclick="printDay('friday')">PRINT WORKOUT</button>
         
         <div class="exercise-section">
           <div class="section-title">PRE-WORKOUT PROTOCOL</div>
           <ul>
             <li style="color: var(--yellow); font-weight: bold;">Perform Daily Vault Work</li>
-            <li style="color: var(--yellow); font-weight: bold;">Perform Upper Dynamic Warmup</li>
+            <li style="color: var(--yellow); font-weight: bold;"><a href="https://youtu.be/oT3TC0wZ9VY" target="_blank" class="exercise-link" style="color: var(--yellow);">Perform Upper Dynamic Warmup</a></li>
           </ul>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">FIELD/POWER (8-10 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">Down the Wall Med Ball Punch</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/sKgnfF3TZyU" target="_blank" class="exercise-link">Down the Wall Med Ball Punch</a></span>
             <span class="exercise-details">2×10/10 L/R</span>
-            <input type="text" class="weight-input" placeholder="Ball (kg)" data-exercise="med-ball-fri">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Ball (kg)" data-exercise="med-ball-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
         <div class="exercise-section">
           <div class="section-title">WEIGHT ROOM (25-35 MIN)</div>
           <div class="exercise-item">
-            <span class="exercise-name">DB Bench Press</span>
-            <span class="exercise-details">3×10</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="db-bench-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/9g166ei4_GE" target="_blank" class="exercise-link">Incline Bench Speed Emphasis</a></span>
+            <span class="exercise-details">4×3</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="incline-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Cable/Bent DB Rear Delt Fly</span>
-            <span class="exercise-details">3×15</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="rear-delt-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/IJzbszHWqDE" target="_blank" class="exercise-link">Pull-up/Chin-up</a></span>
+            <span class="exercise-details">4×4 (Max slow eccentric)</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="pullup-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Cable/Recline Barbell Row</span>
+            <span class="exercise-name"><a href="https://youtube.com/shorts/89DwvA5-a58" target="_blank" class="exercise-link">1 arm row (Knee on Bench)</a></span>
             <span class="exercise-details">2×12</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="row-fri">
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="1arm-row-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Plank Body Saw</span>
-            <span class="exercise-details">2×8</span>
-            <input type="text" class="weight-input" placeholder="Reps" data-exercise="body-saw-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/HTFwzwg_dq0" target="_blank" class="exercise-link">Banded Front Neck ISO Hold</a></span>
+            <span class="exercise-details">2×20 seconds</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Band" data-exercise="neck-iso-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Cable Lat Pulldown</span>
-            <span class="exercise-details">2×12</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="pulldown-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/uPfugVl8gGs" target="_blank" class="exercise-link">Half Kneeling Landmine Press</a></span>
+            <span class="exercise-details">2×10/10</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="landmine-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">DB Bicep Curl</span>
-            <span class="exercise-details">2×10</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="bicep-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/EA0RUWDekBw" target="_blank" class="exercise-link">Powell raise</a></span>
+            <span class="exercise-details">2×8/8</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="powell-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">KB Windmill</span>
-            <span class="exercise-details">2×3/3</span>
-            <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="windmill-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/mzosvTFHQd4" target="_blank" class="exercise-link">Dead Bugs</a></span>
+            <span class="exercise-details">2×8/8</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="BW" data-exercise="dead-bugs-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Ball Slam</span>
-            <span class="exercise-details">2×6</span>
-            <input type="text" class="weight-input" placeholder="Ball (kg)" data-exercise="ball-slam-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/fXFN8_1Bh6k" target="_blank" class="exercise-link">Incline Dumbbell Curl (3s lower)</a></span>
+            <span class="exercise-details">2×8/8</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="incline-curl-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
           <div class="exercise-item">
-            <span class="exercise-name">Side Plank</span>
-            <span class="exercise-details">2×20s/20s</span>
-            <input type="text" class="weight-input" placeholder="Time" data-exercise="side-plank-fri">
+            <span class="exercise-name"><a href="https://youtube.com/shorts/k1RyXZEmKNo" target="_blank" class="exercise-link">Pass Set Pallof Press</a></span>
+            <span class="exercise-details">2×10/10</span>
+            <div class="weight-input-wrapper">
+              <input type="text" class="weight-input" placeholder="Weight (kg)" data-exercise="pallof-fri" data-week="1">
+              <span class="weight-saved">✓</span>
+            </div>
           </div>
         </div>
         
@@ -997,8 +1360,8 @@
         </div>
       </div>
       
-      <!-- Saturday & Sunday remain the same -->
-      <div class="day-card">
+      <!-- Saturday - Recovery -->
+      <div class="day-card" id="saturday-workout">
         <div class="day-header">
           <div class="day-title">SATURDAY - RECOVERY</div>
           <div class="day-type">Feet, Knees, Low Back</div>
@@ -1021,7 +1384,8 @@
         </div>
       </div>
       
-      <div class="day-card">
+      <!-- Sunday - Full Recovery -->
+      <div class="day-card" id="sunday-workout">
         <div class="day-header">
           <div class="day-title">SUNDAY - FULL RECOVERY</div>
           <div class="day-type">Downshift</div>
@@ -1311,405 +1675,162 @@
       <h3 style="color: var(--black); font-family: 'Bebas Neue', sans-serif; font-size: 2em; letter-spacing: 2px; margin-bottom: 10px;">DM ME WITH ANY QUESTIONS!</h3>
       <p style="color: var(--black); font-weight: bold;">Keep it simple and repeatable • Trust the process</p>
     </div>
-  <!-- NFL 6-Week Program Tab -->
-  <div class="tab-content" id="nfl-program">
-    <div class="card">
-      <h2 class="card-title">6-WEEK NFL STRENGTH & CONDITIONING PROGRAM</h2>
-      <p style="color: var(--gray); margin-bottom: 20px;">Structured progression for explosive power and athletic performance</p>
-      
-      <!-- Week Selector -->
-      <div style="display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap;">
-        <button class="week-select-btn active" onclick="showNFLWeek(1)">WEEK 1</button>
-        <button class="week-select-btn" onclick="showNFLWeek(2)">WEEK 2</button>
-        <button class="week-select-btn" onclick="showNFLWeek(3)">WEEK 3</button>
-        <button class="week-select-btn" onclick="showNFLWeek(4)">WEEK 4</button>
-        <button class="week-select-btn" onclick="showNFLWeek(5)">WEEK 5</button>
-        <button class="week-select-btn" onclick="showNFLWeek(6)">WEEK 6</button>
-      </div>
-    </div>
-    
-    <!-- Week 1 Content -->
-    <div class="nfl-week-content active" id="nfl-week-1">
-      <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--yellow) 0%, var(--gold) 100%); color: var(--black);">
-        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; letter-spacing: 3px;">WEEK 1 - FOUNDATION</h2>
-        <p style="font-size: 1.1em;">Movement Patterns & Base Building</p>
-      </div>
-      
-      <!-- Day 1 Lower -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-title">DAY 1 - LOWER A</div>
-          <div class="day-type">Power & Strength</div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">WARM-UP & POWER</div>
-          <div class="exercise-item">
-            <span class="exercise-name">Footwork Sled Push</span>
-            <span class="exercise-details">2×8 (7s work/20s rest)</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">MAIN WORK</div>
-          <div class="exercise-item">
-            <span class="exercise-name">1a) Box Jump</span>
-            <span class="exercise-details">3×5</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1b) Banded Pass Set Power Step</span>
-            <span class="exercise-details">3×10/10 (R/L)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1c) Barbell Step Up (12-16" Box)</span>
-            <span class="exercise-details">3×5/5</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1d) Banded Pass Set Kick Step</span>
-            <span class="exercise-details">3×10/10 (R/L)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2a) Box Squat (optional Chains/Bands)</span>
-            <span class="exercise-details">4×5 (5 sec eccentric)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2b) Body Weight Hip Airplane</span>
-            <span class="exercise-details">4×6/6</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">ACCESSORY</div>
-          <div class="exercise-item">
-            <span class="exercise-name">3a) DB/KB Single leg RDL</span>
-            <span class="exercise-details">2×10</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">3b) Banded Seated Calf</span>
-            <span class="exercise-details">2×15 (slow eccentric)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">Tib Bar Raise</span>
-            <span class="exercise-details">2×15 (slow eccentric)</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Day 2 Upper -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-title">DAY 2 - UPPER A</div>
-          <div class="day-type">Push/Pull Balance</div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">WARM-UP</div>
-          <div class="exercise-item">
-            <span class="exercise-name">Down the Wall Med Ball Punch</span>
-            <span class="exercise-details">2×10/10 L/R</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">MAIN WORK</div>
-          <div class="exercise-item">
-            <span class="exercise-name">1a) Barbell Bench Press</span>
-            <span class="exercise-details">3×5</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1b) Band Pull Aparts</span>
-            <span class="exercise-details">3×12</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2a) TRX Row</span>
-            <span class="exercise-details">2×8 (6 sec negative)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2b) Physio ball neck bridge</span>
-            <span class="exercise-details">2×30 seconds</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2c) 1 Arm KB Shrug</span>
-            <span class="exercise-details">2×15/15</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2d) TRX/Cable Face pull</span>
-            <span class="exercise-details">2×20</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">ACCESSORY</div>
-          <div class="exercise-item">
-            <span class="exercise-name">3a) Dead Bugs</span>
-            <span class="exercise-details">2×8/8</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">3b) Tricep Pushdowns</span>
-            <span class="exercise-details">2×10</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">3c) Pass Set Pallof Press</span>
-            <span class="exercise-details">2×10/10</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Day 3 Lower -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-title">DAY 3 - LOWER B</div>
-          <div class="day-type">Unilateral Focus</div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">WARM-UP & POWER</div>
-          <div class="exercise-item">
-            <span class="exercise-name">Footwork Sled Push</span>
-            <span class="exercise-details">2×8 (7s work/20s rest)</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">MAIN WORK</div>
-          <div class="exercise-item">
-            <span class="exercise-name">1a) 1 leg Broad Jump stick landing</span>
-            <span class="exercise-details">3×3/3</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1b) Pass set Power Step</span>
-            <span class="exercise-details">3×10/10 (R/L)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1c) Lateral Lunge</span>
-            <span class="exercise-details">3×6</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1d) Pass Set Kick Step</span>
-            <span class="exercise-details">3×10/10 (R/L)</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2a) Trap Bar Deadlift (chains/bands)</span>
-            <span class="exercise-details">4×5 @ 70%</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2b) KB/DB Goblet Squat</span>
-            <span class="exercise-details">4×8 (5 sec eccentric)</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">ACCESSORY</div>
-          <div class="exercise-item">
-            <span class="exercise-name">3a) Walking Lunge with OH reach</span>
-            <span class="exercise-details">2×12 total</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">3b) 1 Leg Standing Calf</span>
-            <span class="exercise-details">2×15/15</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">Tib Bar Raise</span>
-            <span class="exercise-details">2×15</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Day 4 Upper -->
-      <div class="day-card">
-        <div class="day-header">
-          <div class="day-title">DAY 4 - UPPER B</div>
-          <div class="day-type">Volume & Hypertrophy</div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">WARM-UP</div>
-          <div class="exercise-item">
-            <span class="exercise-name">Down the Wall Med Ball Punch</span>
-            <span class="exercise-details">2×10/10 L/R</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">MAIN WORK</div>
-          <div class="exercise-item">
-            <span class="exercise-name">1a) DB Bench Press</span>
-            <span class="exercise-details">3×10</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">1b) Cable/Bent DB Rear Delt Fly</span>
-            <span class="exercise-details">3×15</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2a) Cable/Recline Barbell Row</span>
-            <span class="exercise-details">2×12</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2b) Plank Body Saw</span>
-            <span class="exercise-details">2×8</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2c) Cable Lat Pulldown</span>
-            <span class="exercise-details">2×12</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">2d) DB Bicep Curl</span>
-            <span class="exercise-details">2×10</span>
-          </div>
-        </div>
-        
-        <div class="exercise-section">
-          <div class="section-title">ACCESSORY</div>
-          <div class="exercise-item">
-            <span class="exercise-name">3a) KB Windmill</span>
-            <span class="exercise-details">2×3/3</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">3b) Ball Slam</span>
-            <span class="exercise-details">2×6</span>
-          </div>
-          <div class="exercise-item">
-            <span class="exercise-name">3c) Side Plank</span>
-            <span class="exercise-details">2×20s/20s</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Week 2-6 (Placeholder structure) -->
-    <div class="nfl-week-content" id="nfl-week-2">
-      <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--yellow) 0%, var(--gold) 100%); color: var(--black);">
-        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; letter-spacing: 3px;">WEEK 2 - PROGRESSIVE OVERLOAD</h2>
-        <p style="font-size: 1.1em;">Increasing Intensity & Volume</p>
-      </div>
-      <div class="info-box">
-        <h3>WEEK 2 FOCUS</h3>
-        <ul>
-          <li>Increase loads by 5-10% from Week 1</li>
-          <li>Add 1-2 reps per set where applicable</li>
-          <li>Maintain perfect form and tempo</li>
-          <li>Continue to build work capacity</li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="nfl-week-content" id="nfl-week-3">
-      <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--yellow) 0%, var(--gold) 100%); color: var(--black);">
-        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; letter-spacing: 3px;">WEEK 3 - STRENGTH BUILDING</h2>
-        <p style="font-size: 1.1em;">Peak Volume Phase</p>
-      </div>
-      <div class="info-box">
-        <h3>WEEK 3 FOCUS</h3>
-        <ul>
-          <li>Peak training volume</li>
-          <li>Focus on progressive overload</li>
-          <li>Maintain high intensity</li>
-          <li>Monitor recovery closely</li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="nfl-week-content" id="nfl-week-4">
-      <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--yellow) 0%, var(--gold) 100%); color: var(--black);">
-        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; letter-spacing: 3px;">WEEK 4 - STRENGTH BUILDING</h2>
-        <p style="font-size: 1.1em;">Continue Building Maximum Strength</p>
-      </div>
-      <div class="info-box">
-        <h3>WEEK 4 FOCUS</h3>
-        <ul>
-          <li>Maintain high intensity (85-95%)</li>
-          <li>Continue progressive overload</li>
-          <li>Focus on heavy compound movements</li>
-          <li>Quality technique under heavy loads</li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="nfl-week-content" id="nfl-week-5">
-      <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--yellow) 0%, var(--gold) 100%); color: var(--black);">
-        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; letter-spacing: 3px;">WEEK 5 - PEAK PERFORMANCE</h2>
-        <p style="font-size: 1.1em;">Maximum Intensity & Testing</p>
-      </div>
-      <div class="info-box">
-        <h3>WEEK 5 FOCUS</h3>
-        <ul>
-          <li>Test max lifts or rep maxes</li>
-          <li>Maximum intensity efforts</li>
-          <li>Demonstrate strength gains from previous weeks</li>
-          <li>Prepare body for deload</li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="nfl-week-content" id="nfl-week-6">
-      <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--yellow) 0%, var(--gold) 100%); color: var(--black);">
-        <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; letter-spacing: 3px;">WEEK 6 - DELOAD</h2>
-        <p style="font-size: 1.1em;">Active Recovery & Adaptation</p>
-      </div>
-      <div class="info-box">
-        <h3>WEEK 6 FOCUS</h3>
-        <ul>
-          <li>Reduce volume by 40-50%</li>
-          <li>Maintain movement patterns at 60-70% intensity</li>
-          <li>Extra mobility and recovery work</li>
-          <li>Prepare for next training block</li>
-        </ul>
-      </div>
-    </div>
   </div>
 
+</main>
+
 <script>
-function showTab(tabName) {
-  // Hide all tabs
+// Local Storage for Weight Tracking
+function initializeWeightTracking() {
+  document.querySelectorAll('.weight-input').forEach(input => {
+    // Load saved values
+    const week = input.dataset.week || '1';
+    const key = `${input.dataset.exercise}-week${week}`;
+    const saved = localStorage.getItem(key);
+    
+    if (saved) {
+      input.value = saved;
+      // Check for progression
+      if (week !== '1') {
+        const prevWeek = parseInt(week) - 1;
+        const prevKey = `${input.dataset.exercise}-week${prevWeek}`;
+        const prevValue = localStorage.getItem(prevKey);
+        if (prevValue) {
+          showProgression(input, saved, prevValue);
+        }
+      }
+    }
+    
+    // Save on change
+    input.addEventListener('change', function() {
+      const week = this.dataset.week || '1';
+      const key = `${this.dataset.exercise}-week${week}`;
+      localStorage.setItem(key, this.value);
+      
+      // Show saved indicator
+      const savedIndicator = this.nextElementSibling;
+      if (savedIndicator && savedIndicator.classList.contains('weight-saved')) {
+        savedIndicator.classList.add('show');
+        setTimeout(() => savedIndicator.classList.remove('show'), 2000);
+      }
+    });
+  });
+}
+
+// Show progression indicators
+function showProgression(input, currentValue, previousValue) {
+  const current = parseFloat(currentValue);
+  const previous = parseFloat(previousValue);
+  
+  if (!isNaN(current) && !isNaN(previous) && current !== previous) {
+    const wrapper = input.parentElement;
+    const existing = wrapper.querySelector('.progress-badge');
+    if (existing) existing.remove();
+    
+    const badge = document.createElement('span');
+    badge.className = 'progress-badge';
+    
+    if (current > previous) {
+      const increase = ((current - previous) / previous * 100).toFixed(1);
+      badge.classList.add('up');
+      badge.innerHTML = `↑ +${increase}%`;
+    } else {
+      const decrease = ((previous - current) / previous * 100).toFixed(1);
+      badge.classList.add('down');
+      badge.innerHTML = `↓ -${decrease}%`;
+    }
+    
+    wrapper.appendChild(badge);
+  }
+}
+
+// Timer functionality
+let timerInterval;
+let timerSeconds = 0;
+let timerRunning = false;
+
+function toggleTimer() {
+  const timerSection = document.getElementById('timerSection');
+  timerSection.classList.toggle('active');
+}
+
+function startTimer() {
+  if (!timerRunning) {
+    const preset = document.getElementById('timerPreset').value;
+    if (timerSeconds === 0) {
+      timerSeconds = parseInt(preset);
+    }
+    
+    timerRunning = true;
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+}
+
+function pauseTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+}
+
+function resetTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+  const preset = document.getElementById('timerPreset').value;
+  timerSeconds = parseInt(preset);
+  updateTimerDisplay();
+}
+
+function updateTimer() {
+  if (timerSeconds > 0) {
+    timerSeconds--;
+    updateTimerDisplay();
+    
+    if (timerSeconds === 0) {
+      pauseTimer();
+      // Play a sound or show notification
+      alert('Timer finished!');
+      resetTimer();
+    }
+  }
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+  const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  document.getElementById('timerDisplay').textContent = display;
+}
+
+// Tab navigation
+function showTab(tabName, evt) {
+  // Handle both direct calls and event-based calls
+  const clickedButton = evt ? evt.target : event.target;
+  
   const tabs = document.querySelectorAll('.tab-content');
-  tabs.forEach(tab => {
-    tab.classList.remove('active');
-  });
+  tabs.forEach(tab => tab.classList.remove('active'));
   
-  // Show selected tab
-  document.getElementById(tabName).classList.add('active');
+  const targetTab = document.getElementById(tabName);
+  if (targetTab) {
+    targetTab.classList.add('active');
+  }
   
-  // Update nav buttons
   const buttons = document.querySelectorAll('.nav-btn');
-  buttons.forEach(btn => {
-    btn.classList.remove('active');
-  });
+  buttons.forEach(btn => btn.classList.remove('active'));
   
-  // Find and activate clicked button
-  event.target.classList.add('active');
+  if (clickedButton) {
+    clickedButton.classList.add('active');
+  }
   
-  // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// NFL Week Navigation
-function showNFLWeek(weekNum) {
-  // Hide all NFL weeks
-  const nflWeeks = document.querySelectorAll('.nfl-week-content');
-  nflWeeks.forEach(week => {
-    week.classList.remove('active');
-  });
-  
-  // Show selected NFL week
-  document.getElementById('nfl-week-' + weekNum).classList.add('active');
-  
-  // Update NFL week buttons
-  const weekButtons = document.querySelectorAll('.week-select-btn');
-  weekButtons.forEach(btn => {
-    btn.classList.remove('active');
-  });
-  event.target.classList.add('active');
-}
-
-// Weekly Program Week Selection
+// Week selection
 function selectWeek(weekNum) {
-  // Update week info box
   const weekInfo = document.getElementById('week-info');
   const weekDescriptions = {
     1: { title: 'WEEK 1 - FOUNDATION', desc: 'Focus: Movement patterns, base building, technique refinement' },
     2: { title: 'WEEK 2 - PROGRESSIVE OVERLOAD', desc: 'Focus: Increase loads by 5-10%, add volume, maintain form' },
     3: { title: 'WEEK 3 - STRENGTH BUILDING', desc: 'Focus: Peak volume, maximum progressive overload' },
-    4: { title: 'WEEK 4 - STRENGTH BUILDING', desc: 'Focus: Continue building strength, maintain high intensity' },
+    4: { title: 'WEEK 4 - POWER DEVELOPMENT', desc: 'Focus: Continue building strength, maintain high intensity' },
     5: { title: 'WEEK 5 - PEAK PERFORMANCE', desc: 'Focus: Maximum intensity, demonstrate strength gains, prepare for deload' },
     6: { title: 'WEEK 6 - DELOAD', desc: 'Focus: Active recovery, reduce volume by 40-50%, maintain movement patterns' }
   };
@@ -1719,40 +1840,80 @@ function selectWeek(weekNum) {
     <p>${weekDescriptions[weekNum].desc}</p>
   `;
   
-  // Update week selection buttons
   const weekButtons = document.querySelectorAll('.week-select-btn');
-  weekButtons.forEach(btn => {
-    btn.classList.remove('active');
-  });
+  weekButtons.forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
   
-  // For weeks 2-6, you would update exercise progressions here
-  // This is where you'd modify sets, reps, or loads based on the week
-  updateExerciseProgression(weekNum);
+  // Update all exercise inputs with new week
+  document.querySelectorAll('.weight-input').forEach(input => {
+    input.dataset.week = weekNum.toString();
+  });
+  
+  // Reinitialize to load week-specific data
+  initializeWeightTracking();
 }
 
-// Update exercise progressions based on week
-function updateExerciseProgression(weekNum) {
-  // This function would update the exercises based on the week
-  // For example, Week 2 might have higher loads, Week 6 lower volume for deload, etc.
+// Print functionality
+function printDay(dayId) {
+  const printContent = document.getElementById(`${dayId}-workout`).innerHTML;
+  const originalContent = document.body.innerHTML;
   
-  if (weekNum === 2) {
-    // Example: Increase loads by 5-10%
-    console.log('Week 2: Progressive overload applied');
-  } else if (weekNum === 3) {
-    // Example: Peak volume
-    console.log('Week 3: Peak volume applied');
-  } else if (weekNum === 4) {
-    // Example: Power development - moderate volume, high intensity
-    console.log('Week 4: Power development focus');
-  } else if (weekNum === 5) {
-    // Example: Peak performance
-    console.log('Week 5: Peak performance - maximum intensity');
-  } else if (weekNum === 6) {
-    // Example: Deload week - reduce volume
-    console.log('Week 6: Deload protocol - 40-50% volume reduction');
-  }
+  document.body.innerHTML = `
+    <div style="padding: 20px;">
+      <h1 style="font-family: 'Bebas Neue', sans-serif;">BORIS STANKOV - ${dayId.toUpperCase()} WORKOUT</h1>
+      ${printContent}
+    </div>
+  `;
+  
+  window.print();
+  document.body.innerHTML = originalContent;
+  
+  // Reinitialize after print
+  initializeWeightTracking();
+  resetTimer();
 }
+
+// Export data function
+function exportData() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.includes('week')) {
+      data[key] = localStorage.getItem(key);
+    }
+  }
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'training-data-boris-stankov.json';
+  a.click();
+}
+
+// Import data function
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      Object.keys(data).forEach(key => {
+        localStorage.setItem(key, data[key]);
+      });
+      initializeWeightTracking();
+      alert('Data imported successfully!');
+    } catch (error) {
+      alert('Error importing data. Please check the file format.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  initializeWeightTracking();
+  resetTimer();
+});
 </script>
 
 </body>
