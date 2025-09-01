@@ -447,6 +447,7 @@
     transition: all 0.3s ease;
     flex-wrap: wrap;
     gap: 10px;
+    position: relative;
   }
   
   .exercise-item:hover {
@@ -681,6 +682,139 @@
     line-height: 1.6;
   }
   
+  /* Exercise Substitution Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-content {
+    background: var(--dark-gray);
+    border: 2px solid var(--yellow);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border);
+  }
+  
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8em;
+    color: var(--yellow);
+    letter-spacing: 1px;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    color: var(--yellow);
+    font-size: 2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px var(--glow);
+  }
+  
+  .sub-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: var(--black);
+    border: 1px solid var(--yellow);
+    color: var(--white);
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .sub-button {
+    background: var(--yellow);
+    color: var(--black);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .sub-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--glow);
+  }
+  
+  .sub-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .substitution-result {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(245, 200, 66, 0.1);
+    border: 1px solid var(--yellow);
+    border-radius: 8px;
+    color: var(--white);
+    line-height: 1.6;
+  }
+  
+  .substitution-result h4 {
+    color: var(--yellow);
+    font-family: 'Bebas Neue', sans-serif;
+    margin-bottom: 10px;
+  }
+  
+  .sub-link {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+  }
+  
+  .sub-link:hover {
+    background: var(--yellow);
+    color: var(--black);
+  }
+  
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .header-content {
@@ -766,6 +900,20 @@
 
 <!-- Timer Button -->
 <button class="quick-timer-btn" onclick="toggleTimer()">⏱️</button>
+
+<!-- Exercise Substitution Modal -->
+<div class="modal" id="subModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">EXERCISE SUBSTITUTION</div>
+      <button class="close-btn" onclick="closeSubModal()">&times;</button>
+    </div>
+    <div id="exerciseInfo"></div>
+    <input type="text" class="sub-input" id="equipmentInput" placeholder="What equipment do you have available? (e.g., dumbbells, bands, bodyweight only)">
+    <button class="sub-button" id="getSubBtn" onclick="getSubstitution()">GET SUBSTITUTION</button>
+    <div id="subResult"></div>
+  </div>
+</div>
 
 <!-- Timer Section -->
 <div class="timer-section" id="timerSection">
@@ -1808,7 +1956,387 @@ function printDay(dayId) {
   resetTimer();
 }
 
-// Export data function
+// Exercise Substitution System
+let currentExercise = '';
+
+function openSubModal(exerciseName, exerciseDetails) {
+  currentExercise = exerciseName;
+  const modal = document.getElementById('subModal');
+  const info = document.getElementById('exerciseInfo');
+  info.innerHTML = `
+    <div style="margin-bottom: 15px; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 5px;">
+      <p style="color: var(--yellow); font-weight: bold;">Original Exercise:</p>
+      <p style="color: var(--white);">${exerciseName} - ${exerciseDetails}</p>
+    </div>
+  `;
+  modal.classList.add('active');
+}
+
+function closeSubModal() {
+  const modal = document.getElementById('subModal');
+  modal.classList.remove('active');
+  document.getElementById('subResult').innerHTML = '';
+  document.getElementById('equipmentInput').value = '';
+}
+
+// Comprehensive exercise substitutions database
+const exerciseSubstitutions = {
+  // Lower Body - Power
+  'footwork sled push': {
+    'bodyweight': 'Bear Crawl Sprints (7 sec), Wall Sits with rapid foot taps, or High Knee Sprints in place',
+    'dumbbells': 'Farmer Walk with high knees, Dumbbell Walking Lunges with explosive drive',
+    'bands': 'Band-resisted marching, Band-resisted high knees, or Lateral band walks with speed',
+    'general': 'Hill sprints, Prowler push alternative with partner resistance'
+  },
+  'box jump': {
+    'bodyweight': 'Jump Squats, Broad Jumps, Depth Jumps from small height, or Tuck Jumps',
+    'dumbbells': 'Dumbbell Jump Squats, Weighted Step-Ups with explosive drive',
+    'bands': 'Band-assisted jumps for height, Banded squat jumps',
+    'general': 'Stair jumps, Park bench step-ups with jump'
+  },
+  'single leg box jump': {
+    'bodyweight': 'Single Leg Bounds, Single Leg Broad Jumps, Skater Hops',
+    'dumbbells': 'Single Leg Box Step-ups with knee drive, Weighted single leg jumps',
+    'bands': 'Band-assisted single leg jumps, Band-resisted single leg bounds',
+    'general': 'Stair hops on one leg, Single leg depth jumps'
+  },
+  
+  // Lower Body - Strength
+  'box squat': {
+    'bodyweight': 'Pause Squats to bench/chair, Wall Sits (5 sec holds), Bulgarian Split Squats',
+    'dumbbells': 'Goblet Box Squats, Dumbbell Front Squats with pause, Goblet Squats to bench',
+    'bands': 'Banded Box Squats, Band-resisted squats with 5 sec eccentric',
+    'general': 'Any squat variation with controlled eccentric and pause at bottom'
+  },
+  'trap bar rfess': {
+    'bodyweight': 'Bulgarian Split Squats with 3 sec eccentric, Rear Foot Elevated Split Squats',
+    'dumbbells': 'DB Bulgarian Split Squats, DB Lunges with rear foot elevated',
+    'bands': 'Band-resisted split squats, Band-assisted pistol squats',
+    'general': 'Single leg squats to box, Assisted pistol squats'
+  },
+  'trap bar deadlift': {
+    'bodyweight': 'Single Leg RDLs, Good Mornings, Nordic Curls (eccentric)',
+    'dumbbells': 'Dumbbell RDLs, Dumbbell Sumo Deadlifts, DB Stiff Leg Deadlifts',
+    'bands': 'Band Deadlifts, Band Pull-throughs, Band Good Mornings',
+    'general': 'Barbell RDLs, Kettlebell Swings, Hip Thrusts'
+  },
+  'barbell step up': {
+    'bodyweight': 'High Box Step-ups, Deficit Reverse Lunges, Box Step-ups with knee drive',
+    'dumbbells': 'Dumbbell Step-ups, Weighted Lunges, DB Box Step-ups',
+    'bands': 'Band-resisted step-ups, Band-resisted lunges',
+    'general': 'Stairs or park bench step-ups, Hill walking lunges'
+  },
+  'goblet squat': {
+    'bodyweight': 'Deep Bodyweight Squats, Jump Squats, Prisoner Squats',
+    'dumbbells': 'Dumbbell Front Squats, Dumbbell Goblet Squats',
+    'bands': 'Band Goblet Squats, Band Front Squats',
+    'general': 'Front Squats with any weight, Zercher Squats'
+  },
+  
+  // Pass Protection Drills
+  'banded pass set power step': {
+    'bodyweight': 'Shadow pass sets with focus on footwork, Wall sits with arm punches',
+    'dumbbells': 'DB held at chest during pass set footwork, Weighted stance work',
+    'bands': 'Band around waist for partner-resisted sets, Band punch-outs in stance',
+    'general': 'Partner hand fighting drills, Mirror drill with partner'
+  },
+  'banded pass set kick step': {
+    'bodyweight': 'Lateral lunges with reach, Cossack squats, Lateral bounds',
+    'dumbbells': 'DB lateral lunges, Weighted lateral steps',
+    'bands': 'Lateral band walks in pass set stance, Band-resisted lateral slides',
+    'general': 'Slide board lateral movements, Partner-resisted lateral steps'
+  },
+  'banded lateral neck': {
+    'bodyweight': 'Lateral shuffle to vertical jump, Lateral bounds, Speed skaters',
+    'dumbbells': 'DB lateral lunges to press, Weighted lateral jumps',
+    'bands': 'Lateral band walks with speed, Band-resisted shuffles',
+    'general': 'Cone drills with lateral movement, Agility ladder lateral work'
+  },
+  
+  // Upper Body - Push
+  'barbell bench press': {
+    'bodyweight': 'Push-ups (regular, wide, diamond), Decline push-ups, Explosive push-ups',
+    'dumbbells': 'Dumbbell Bench Press, DB Floor Press, DB Flyes',
+    'bands': 'Band Chest Press, Band Push-ups, Band Flyes',
+    'general': 'Any horizontal pressing movement'
+  },
+  'incline bench': {
+    'bodyweight': 'Pike Push-ups, Decline Push-ups, Handstand Push-ups (assisted)',
+    'dumbbells': 'Incline DB Press, Arnold Press, DB Shoulder Press',
+    'bands': 'Band Incline Press, Band Shoulder Press',
+    'general': 'Any incline or shoulder pressing movement'
+  },
+  'landmine press': {
+    'bodyweight': 'Single Arm Push-ups, Archer Push-ups, T-Push-ups',
+    'dumbbells': 'Single Arm DB Press, DB Clean and Press',
+    'bands': 'Single Arm Band Press, Band Punches',
+    'general': 'Any unilateral pressing movement'
+  },
+  
+  // Upper Body - Pull
+  'pull-up': {
+    'bodyweight': 'Inverted Rows (under table/bar), Door Frame Rows, Dead Hangs',
+    'dumbbells': 'Bent Over DB Rows, DB Pullovers, Renegade Rows',
+    'bands': 'Band Lat Pulldowns, Band-assisted Pull-ups, Band Rows',
+    'general': 'Any vertical pulling movement'
+  },
+  'chin-up': {
+    'bodyweight': 'Supinated Inverted Rows, Close-grip inverted rows',
+    'dumbbells': 'DB Rows with supinated grip, DB Curls to Rows',
+    'bands': 'Band-assisted Chin-ups, Band Curls to Rows',
+    'general': 'Any supinated pulling movement'
+  },
+  'trx row': {
+    'bodyweight': 'Inverted Row under table, Door frame rows, Superman pulls',
+    'dumbbells': 'Bent Over DB Rows, Chest-Supported DB Rows',
+    'bands': 'Band Rows, Band Face Pulls',
+    'general': 'Any horizontal pulling movement'
+  },
+  '1 arm row': {
+    'bodyweight': 'Single Arm Inverted Rows, Archer Rows',
+    'dumbbells': 'Single DB Row, Kroc Rows, Meadows Rows',
+    'bands': 'Single Arm Band Rows, Band Saws',
+    'general': 'Any unilateral rowing movement'
+  },
+  
+  // Accessory Work
+  'hip airplane': {
+    'bodyweight': 'Single Leg RDL (bodyweight), Bird Dogs, Single Leg Glute Bridges',
+    'dumbbells': 'DB Single Leg RDL, DB Single Leg Deadlift',
+    'bands': 'Band Single Leg RDL, Band Hip Abduction',
+    'general': 'Any single leg hip stability exercise'
+  },
+  'tib bar raise': {
+    'bodyweight': 'Wall Tibialis Raises, Heel Walks, Toe Raises against wall',
+    'dumbbells': 'DB held for resistance during tibialis raises',
+    'bands': 'Band around foot for tibialis raises, Band dorsiflexion',
+    'general': 'Any tibialis/shin strengthening exercise'
+  },
+  'banded seated calf': {
+    'bodyweight': 'Single Leg Calf Raises, Jump Rope, Pogo Jumps',
+    'dumbbells': 'DB Calf Raises, Weighted calf raises',
+    'bands': 'Standing Band Calf Raises',
+    'general': 'Any calf strengthening exercise'
+  },
+  'dead bugs': {
+    'bodyweight': 'Dead Bugs (standard), Bird Dogs, Hollow Body Holds',
+    'dumbbells': 'Weighted Dead Bugs (light DB)',
+    'bands': 'Band Dead Bugs, Band Pallof Press',
+    'general': 'Any anti-extension core exercise'
+  },
+  'pallof press': {
+    'bodyweight': 'Side Planks, Bear Crawl Holds, Bird Dogs',
+    'dumbbells': 'DB Wood Chops, Suitcase Carries',
+    'bands': 'Band Pallof Press, Band Wood Chops',
+    'general': 'Any anti-rotation core exercise'
+  },
+  
+  // Neck Work
+  'physio ball neck bridge': {
+    'bodyweight': 'Isometric neck holds (hand resistance), Wall neck leans',
+    'dumbbells': 'Light DB neck flexion/extension (careful)',
+    'bands': 'Band neck exercises (all directions)',
+    'general': 'Partner-resisted neck work, Manual resistance'
+  },
+  'banded front neck': {
+    'bodyweight': 'Isometric front neck holds with hand resistance',
+    'dumbbells': 'Lying neck flexion with light weight',
+    'bands': 'Band neck flexion, Band neck holds',
+    'general': 'Any neck flexion strengthening'
+  }
+};
+
+function getSubstitution() {
+  const equipment = document.getElementById('equipmentInput').value.trim().toLowerCase();
+  const resultDiv = document.getElementById('subResult');
+  const btn = document.getElementById('getSubBtn');
+  
+  if (!equipment) {
+    resultDiv.innerHTML = '<p style="color: var(--red);">Please specify what equipment you have available.</p>';
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = 'FINDING ALTERNATIVES...';
+  
+  // Search through the comprehensive database
+  let foundSub = null;
+  let exerciseKey = null;
+  
+  // Find matching exercise in database
+  for (const [exercise, subs] of Object.entries(exerciseSubstitutions)) {
+    if (currentExercise.toLowerCase().includes(exercise) || 
+        exercise.includes(currentExercise.toLowerCase().split(' ')[0])) {
+      exerciseKey = exercise;
+      
+      // Check for equipment match
+      if (equipment.includes('bodyweight') || equipment.includes('body weight') || equipment.includes('none')) {
+        foundSub = subs.bodyweight;
+      } else if (equipment.includes('dumbbell') || equipment.includes('db')) {
+        foundSub = subs.dumbbells;
+      } else if (equipment.includes('band') || equipment.includes('resistance')) {
+        foundSub = subs.bands;
+      } else {
+        foundSub = subs.general || subs.bodyweight;
+      }
+      break;
+    }
+  }
+  
+  // Display results
+  if (foundSub) {
+    resultDiv.innerHTML = `
+      <div class="substitution-result">
+        <h4>Recommended Substitutions:</h4>
+        <p style="color: var(--yellow); margin-bottom: 10px;">For ${currentExercise} with ${equipment}:</p>
+        <p>${foundSub}</p>
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+          <p style="font-size: 0.9em; color: var(--gray);">Tips:</p>
+          <ul style="font-size: 0.9em; margin-top: 5px;">
+            <li>Match the original tempo and rep scheme</li>
+            <li>Focus on the same movement pattern</li>
+            <li>Adjust load/difficulty to match RPE</li>
+          </ul>
+        </div>
+      </div>
+    `;
+  } else {
+    // Provide general guidelines based on movement pattern
+    const movementPattern = detectMovementPattern(currentExercise);
+    resultDiv.innerHTML = `
+      <div class="substitution-result">
+        <h4>General Substitution Guidelines:</h4>
+        <p style="color: var(--yellow); margin-bottom: 10px;">For ${currentExercise}:</p>
+        ${getGeneralGuidelines(movementPattern, equipment)}
+        <div style="margin-top: 15px; padding: 10px; background: rgba(255,87,34,0.1); border: 1px solid var(--red); border-radius: 5px;">
+          <p style="font-size: 0.9em;">Can't find a perfect match? Contact your coach for personalized alternatives.</p>
+        </div>
+      </div>
+    `;
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'GET SUBSTITUTION';
+}
+
+function detectMovementPattern(exercise) {
+  const patterns = {
+    squat: ['squat', 'goblet', 'box squat', 'lunge'],
+    hinge: ['deadlift', 'rdl', 'swing', 'hip', 'good morning'],
+    push: ['press', 'bench', 'push', 'tricep'],
+    pull: ['row', 'pull', 'chin', 'lat'],
+    carry: ['carry', 'walk', 'hold'],
+    jump: ['jump', 'bound', 'hop', 'plyo'],
+    core: ['plank', 'dead bug', 'pallof', 'ab', 'core']
+  };
+  
+  const exerciseLower = exercise.toLowerCase();
+  for (const [pattern, keywords] of Object.entries(patterns)) {
+    if (keywords.some(keyword => exerciseLower.includes(keyword))) {
+      return pattern;
+    }
+  }
+  return 'general';
+}
+
+function getGeneralGuidelines(pattern, equipment) {
+  const guidelines = {
+    squat: `
+      <p>Squat pattern alternatives with ${equipment}:</p>
+      <ul>
+        <li>Focus on knee-dominant movements</li>
+        <li>Maintain upright torso position</li>
+        <li>Options: Air squats, lunges, step-ups, wall sits</li>
+        <li>Add tempo work to increase difficulty without load</li>
+      </ul>
+    `,
+    hinge: `
+      <p>Hinge pattern alternatives with ${equipment}:</p>
+      <ul>
+        <li>Focus on hip-dominant movements</li>
+        <li>Emphasize glutes and hamstrings</li>
+        <li>Options: Good mornings, single-leg RDLs, bridges</li>
+        <li>Use slow eccentrics to increase challenge</li>
+      </ul>
+    `,
+    push: `
+      <p>Push pattern alternatives with ${equipment}:</p>
+      <ul>
+        <li>Horizontal: Push-up variations</li>
+        <li>Vertical: Pike push-ups, handstand progressions</li>
+        <li>Add pauses or tempo to increase difficulty</li>
+      </ul>
+    `,
+    pull: `
+      <p>Pull pattern alternatives with ${equipment}:</p>
+      <ul>
+        <li>Horizontal: Inverted rows under sturdy table</li>
+        <li>Vertical: Door frame pulls, towel rows</li>
+        <li>Focus on squeezing shoulder blades together</li>
+      </ul>
+    `,
+    jump: `
+      <p>Plyometric alternatives with ${equipment}:</p>
+      <ul>
+        <li>Jumps: Squat jumps, split jumps, bounds</li>
+        <li>Low impact: Fast step-ups, quick feet drills</li>
+        <li>Focus on explosive intent even with less load</li>
+      </ul>
+    `,
+    core: `
+      <p>Core alternatives with ${equipment}:</p>
+      <ul>
+        <li>Anti-extension: Planks, hollow holds</li>
+        <li>Anti-rotation: Side planks, bird dogs</li>
+        <li>Anti-flexion: Superman, back extensions</li>
+      </ul>
+    `,
+    general: `
+      <p>General substitution principles:</p>
+      <ul>
+        <li>Match the movement pattern as closely as possible</li>
+        <li>Target the same muscle groups</li>
+        <li>Adjust tempo, pauses, or volume to match intensity</li>
+        <li>When in doubt, ask your coach for guidance</li>
+      </ul>
+    `
+  };
+  
+  return guidelines[pattern] || guidelines.general;
+}
+
+// Add substitution buttons to exercises after page loads
+function addSubstitutionButtons() {
+  document.querySelectorAll('.exercise-item').forEach(item => {
+    const nameElement = item.querySelector('.exercise-name');
+    const detailsElement = item.querySelector('.exercise-details');
+    
+    if (nameElement && detailsElement && !item.querySelector('.sub-link')) {
+      const linkElement = nameElement.querySelector('a');
+      const exerciseName = linkElement ? linkElement.textContent.replace('🎥', '').trim() : nameElement.textContent.replace('🎥', '').trim();
+      const exerciseDetails = detailsElement.textContent;
+      
+      const subBtn = document.createElement('button');
+      subBtn.className = 'sub-link';
+      subBtn.textContent = 'SUB';
+      subBtn.title = 'Get exercise substitution';
+      subBtn.onclick = function(e) {
+        e.stopPropagation();
+        openSubModal(exerciseName, exerciseDetails);
+      };
+      
+      item.appendChild(subBtn);
+    }
+  });
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('subModal');
+  if (event.target == modal) {
+    closeSubModal();
+  }
+}
 function exportData() {
   const data = {};
   for (let i = 0; i < localStorage.length; i++) {
@@ -1848,6 +2376,7 @@ function importData(file) {
 document.addEventListener('DOMContentLoaded', function() {
   initializeWeightTracking();
   resetTimer();
+  setTimeout(addSubstitutionButtons, 500); // Add substitution buttons after content loads
 });
 </script>
 
